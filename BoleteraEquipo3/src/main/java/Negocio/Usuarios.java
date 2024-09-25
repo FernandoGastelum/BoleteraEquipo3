@@ -14,7 +14,7 @@ public class Usuarios {
     private String contrasena; // En español sería "contraseña", pero por convención en Java usamos nombres sin caracteres especiales
     private String nombreCompleto;
     private String domicilio;
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
     private int edad;
     private double saldo;
 
@@ -22,7 +22,7 @@ public class Usuarios {
     public Usuarios() {}
 
     // Constructor con todos los parámetros
-    public Usuarios(int usuarioId, String correo, String contrasena, String nombreCompleto, String domicilio, Date fechaNacimiento, int edad, double saldo) {
+    public Usuarios(int usuarioId, String correo, String contrasena, String nombreCompleto, String domicilio, String fechaNacimiento, int edad, double saldo) {
         this.usuarioId = usuarioId;
         this.correo = correo;
         this.contrasena = contrasena;
@@ -74,11 +74,11 @@ public class Usuarios {
         this.domicilio = domicilio;
     }
 
-    public Date getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

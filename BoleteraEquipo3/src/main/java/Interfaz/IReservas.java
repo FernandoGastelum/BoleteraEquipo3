@@ -4,17 +4,17 @@
  */
 package Interfaz;
 
-import Negocio.Boletos;
+import Negocio.Reservas;
 import java.util.List;
 
 /**
  *
  * @author gaspa
  */
-public interface IBoleto {
-    public boolean agregar(Boletos boleto);
+public interface IReservas {
+    public boolean agregar(Reservas reserva);
     public boolean eliminar(int id);
-    public boolean actualizar(Boletos boleto);
-    public Boletos consultar(int id);
-    public List<Boletos> consultar();
+    public boolean actualizar(Reservas reserva);
+    public Reservas consultar(int id);
+    public List<Reservas> consultar();
 }

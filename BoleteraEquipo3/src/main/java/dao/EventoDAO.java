@@ -5,6 +5,7 @@
 package dao;
 
 import Interfaz.IConexion;
+import Interfaz.IEvento;
 import Negocio.Eventos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,13 +13,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author gaspa
  */
-public class EventoDAO {
+public class EventoDAO implements IEvento{
     private IConexion conexion;
+    
     
     public EventoDAO(IConexion conexion){
         this.conexion=conexion;
@@ -69,6 +72,37 @@ public class EventoDAO {
             ex.printStackTrace();
             System.out.println("No se pudo agregar el evento");
             return false;
+        }
+    }
+
+    @Override
+    public boolean eliminar(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean actualizar(Eventos evento) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Eventos consultar(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public void cargarTablaEventos(DefaultTableModel model){
+        EventoDAO eDAO = new EventoDAO(conexion);
+        java.util.List<Eventos> listaEventos = this.consultar();
+        
+        for (Eventos eventos : listaEventos) {
+        model.addRow(new Object[]{
+            eventos.getNombre_evento(), 
+            eventos.getFecha_evento(), 
+            eventos.getVenue(), 
+            eventos.getCiudad(), 
+            eventos.getEstado(), 
+            eventos.getDescripcion()
+            });
         }
     }
 }
