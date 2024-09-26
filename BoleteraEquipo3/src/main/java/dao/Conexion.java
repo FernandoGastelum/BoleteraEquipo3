@@ -19,7 +19,7 @@ public class Conexion implements IConexion{
 
     private String cadena = "jdbc:mysql://localhost:3306/sistemareventaboletos";
     private String usuario = "root";
-    private String contraseña = "12345";
+    private String contraseña = "1234";
 
     @Override
     public Connection crearConexion() {
