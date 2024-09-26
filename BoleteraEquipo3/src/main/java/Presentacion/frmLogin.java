@@ -133,9 +133,10 @@ public class frmLogin extends javax.swing.JPanel implements java.beans.Customize
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void botonRegistrarse(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarse
-       // Redirigir a frmRegistroUsuario
-        frmRegistroUsuario registro = new frmRegistroUsuario();
-        registro.setVisible(true);
+      // Crear y mostrar la ventana de registro
+    frmRegistro registro = new frmRegistro();
+    registro.setVisible(true);
+     
     }//GEN-LAST:event_botonRegistrarse
 
     private void botonIngresar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIngresar
