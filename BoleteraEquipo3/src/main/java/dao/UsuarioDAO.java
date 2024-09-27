@@ -107,6 +107,37 @@ public class UsuarioDAO implements IUsuarios{
         }
         return null;
     }
+    public Usuarios consultarConCorreo(String correo) {
+        Connection bd = conexion.crearConexion();
+        String buscarUsuario = "SELECT * FROM Usuarios WHERE correo = (?)";
+        try {
+            PreparedStatement busqueda = bd.prepareStatement(buscarUsuario);
+            busqueda.setString(1, correo);
+            
+            ResultSet resultados = busqueda.executeQuery();
+            
+            if(resultados.next()){
+                Usuarios u = new Usuarios();
+                u.setUsuarioId(resultados.getInt("usuario_id"));
+                u.setCorreo(resultados.getString("correo"));
+                u.setContrasena(resultados.getString("contraseña"));
+                u.setNombreCompleto(resultados.getString("nombre_completo"));
+                u.setDomicilio(resultados.getString("domicilio"));
+                u.setFechaNacimiento(resultados.getString("fecha_nacimiento"));
+                u.setEdad(resultados.getInt("edad"));
+                u.setSaldo(resultados.getFloat("saldo"));
+                return u;
+            }
+            else{
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("No se pudo consultar");
+            
+            
+        }
+        return null;
+    }
 
     @Override
     public List<Usuarios> consultar() {

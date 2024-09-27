@@ -145,7 +145,7 @@ public class frmLogin extends javax.swing.JPanel implements java.beans.Customize
 
         if (validarCredenciales(usuario, contraseña)) {
             // Si las credenciales son válidas, redirigir a frmMenu
-            frmMenu menu = new frmMenu();
+            frmMenu menu = new frmMenu(usuario);
             menu.setVisible(true);
         } else {
             // Mostrar un mensaje de error si las credenciales no son válidas
