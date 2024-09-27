@@ -772,7 +772,11 @@ public class frmMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSaldoActionPerformed
-        jTabbedPane1.setSelectedIndex(3);
+        frmSaldo saldoForm = new frmSaldo();
+    
+    // Hacer visible el formulario frmSaldo
+    saldoForm.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_btnAgregarSaldoActionPerformed
 
     private void btnModificarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarDatosActionPerformed

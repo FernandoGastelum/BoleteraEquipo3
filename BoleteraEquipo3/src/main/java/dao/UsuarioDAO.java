@@ -138,6 +138,67 @@ public class UsuarioDAO implements IUsuarios{
         }
         return usuarios;
     }
- 
-    
+ public double obtenerSaldo(int usuarioId) {
+    Connection bd = conexion.crearConexion();
+    String consulta = "SELECT saldo FROM Usuarios WHERE usuario_id = ?";
+    try {
+        PreparedStatement statement = bd.prepareStatement(consulta);
+        statement.setInt(1, usuarioId);
+        ResultSet resultados = statement.executeQuery();
+        if (resultados.next()) {
+            return resultados.getDouble("saldo");
+        }
+    } catch (SQLException e) {
+        System.out.println("No se pudo consultar el saldo");
+    }
+    return 0.0;
+}
+
+public boolean actualizarSaldo(int usuarioId, double nuevoSaldo) {
+    Connection bd = conexion.crearConexion();
+    String actualizar = "UPDATE Usuarios SET saldo = ? WHERE usuario_id = ?";
+    try {
+        PreparedStatement statement = bd.prepareStatement(actualizar);
+        statement.setDouble(1, nuevoSaldo);
+        statement.setInt(2, usuarioId);
+        statement.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        System.out.println("No se pudo actualizar el saldo");
+        return false;
+    }
+}
+  // Otros métodos y constructor
+
+     
+    public double obtenerSaldoPorCorreo(String correo) {
+    Connection bd = conexion.crearConexion();
+    String consulta = "SELECT saldo FROM Usuarios WHERE correo = ?";
+    try {
+        PreparedStatement statement = bd.prepareStatement(consulta);
+        statement.setString(1, correo);
+        ResultSet resultados = statement.executeQuery();
+        if (resultados.next()) {
+            return resultados.getDouble("saldo");
+        }
+    } catch (SQLException e) {
+        System.out.println("No se pudo consultar el saldo");
+    }
+    return -1; // Retorna -1 si no se encuentra el usuario o hay un error
+}
+
+public boolean actualizarSaldoPorCorreo(String correo, double nuevoSaldo) {
+    Connection bd = conexion.crearConexion();
+    String actualizar = "UPDATE Usuarios SET saldo = ? WHERE correo = ?";
+    try {
+        PreparedStatement statement = bd.prepareStatement(actualizar);
+        statement.setDouble(1, nuevoSaldo);
+        statement.setString(2, correo);
+        statement.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        System.out.println("No se pudo actualizar el saldo");
+        return false;
+    }
+}
 }
