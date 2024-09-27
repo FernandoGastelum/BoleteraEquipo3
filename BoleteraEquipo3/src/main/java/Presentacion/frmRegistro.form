@@ -269,6 +269,9 @@
     <Component class="javax.swing.JTextField" name="jTextField5">
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="%d-%m-%Y"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

@@ -118,6 +118,8 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
             }
         });
 
+        jTextField6.setText("%d-%m-%Y");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -215,10 +217,21 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonRegresar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresar
-       JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        if (topFrame != null) {
-            topFrame.dispose(); // Cierra el formulario actual
-        }
+       // Crear una nueva instancia de frmLogin
+    frmLogin loginPanel = new frmLogin();
+    
+    // Crear un nuevo JFrame para el login
+    JFrame loginFrame = new JFrame("Login de Usuario");
+    loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    loginFrame.add(loginPanel);
+    loginFrame.pack(); // Ajusta el tamaño al contenido
+    loginFrame.setVisible(true);
+    
+    // Cierra el JFrame de registro
+    JFrame registroFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+    if (registroFrame != null) {
+        registroFrame.dispose(); // Cierra el formulario de registro
+    }
     }//GEN-LAST:event_botonRegresar
 
     private void botonRegistrarse(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarse
@@ -259,22 +272,7 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
 
 
 
-public static void main(String[] args) {
-    javax.swing.SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
-            // Crear un JFrame para contener el JPanel
-            JFrame frame = new JFrame("Registro de Usuario");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(600, 400); // Establecer un tamaño adecuado para el JFrame
-            
-            // Crear una instancia del formulario
-            frmRegistro registroPanel = new frmRegistro();
-            frame.add(registroPanel); // Agregar el JPanel al JFrame
-            
-            frame.setVisible(true); // Hacer visible el JFrame
-        }
-    });
-}
+
 
 
 
