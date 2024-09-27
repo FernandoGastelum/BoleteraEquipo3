@@ -4,8 +4,10 @@
  */
 package Presentacion;
 
+import Negocio.Usuarios;
 import com.google.protobuf.TextFormat.ParseException;
 import dao.Conexion;
+import dao.UsuarioDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -24,13 +26,7 @@ import javax.swing.SwingUtilities;
 public class frmRegistro extends javax.swing.JPanel implements java.beans.Customizer {
     
     private Object bean;
-     // Declaración de variables de entrada
-    private javax.swing.JTextField txtCorreo;
-    private javax.swing.JPasswordField txtContrasena;
-    private javax.swing.JTextField txtNombreCompleto;
-    private javax.swing.JTextField txtDomicilio;
-    private javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtFechaNacimiento;
+    Conexion c = new Conexion();
     /**
      * Creates new customizer frmRegistro
      */
@@ -102,7 +98,7 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Domicilio");
+        jLabel4.setText("Fecha de nacimiento");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -110,7 +106,7 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Fecha de Nacimiento");
+        jLabel6.setText("Domicilio");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -127,35 +123,6 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField6)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(37, 37, 37)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(49, 49, 49)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jTextField3))))
-                        .addGap(350, 350, 350))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(342, 342, 342))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -164,16 +131,46 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
                 .addComponent(jLabel3)
                 .addGap(372, 372, 372))
             .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(jLabel4)
-                        .addGap(109, 109, 109)
-                        .addComponent(jLabel5))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(72, 72, 72)
+                                .addComponent(jLabel5)
+                                .addGap(152, 152, 152)
+                                .addComponent(jLabel6))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(340, 340, 340)
+                                .addComponent(jLabel7)))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(362, 362, 362)
-                        .addComponent(jLabel7)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField6)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(37, 37, 37)
+                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(49, 49, 49)
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField3)))
+                                .addGap(350, 350, 350))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(342, 342, 342))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,11 +190,15 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
                             .addComponent(jTextField1)
                             .addComponent(jTextField3))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel6))
+                                .addGap(12, 12, 12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -221,48 +222,35 @@ public class frmRegistro extends javax.swing.JPanel implements java.beans.Custom
     }//GEN-LAST:event_botonRegresar
 
     private void botonRegistrarse(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarse
-   Conexion con = new Conexion();
-        Connection conexion = con.getConnection();
-        String correo = txtCorreo.getText();
-        String contrasena = new String(txtContrasena.getPassword()); // Obtener el texto de la contraseña correctamente
-        String nombreCompleto = txtNombreCompleto.getText();
-        String domicilio = txtDomicilio.getText();
-        int edad = Integer.parseInt(txtEdad.getText());
-        
-        // Validación y formato de fecha
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date fechaNacimiento;
-        try {
-            fechaNacimiento = formatter.parse(txtFechaNacimiento.getText());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use dd-MM-yyyy");
-            return;
-        }
+   c.crearConexion();
+    UsuarioDAO u = new UsuarioDAO(c);
+    
+    // Captura los datos desde los JTextFields
+    String correo = jTextField1.getText(); // Correo
+    String contrasena = jTextField2.getText(); // Contraseña
+    String nombreCompleto = jTextField3.getText(); // Nombre Completo
+    String domicilio = jTextField4.getText(); // Domicilio
+    int edad = Integer.parseInt(jTextField5.getText()); // Edad
+    String fechaNacimiento = jTextField6.getText(); // Fecha de Nacimiento
 
-        String insertSQL = "INSERT INTO Usuarios (correo, contraseña, nombre_completo, domicilio, edad, fecha_nacimiento) VALUES (?, ?, ?, ?, ?, ?)";
-
-        try {
-            PreparedStatement pstmt = conexion.prepareStatement(insertSQL);
-            pstmt.setString(1, correo);
-            pstmt.setString(2, contrasena);
-            pstmt.setString(3, nombreCompleto);
-            pstmt.setString(4, domicilio);
-            pstmt.setInt(5, edad);
-            pstmt.setDate(6, new java.sql.Date(fechaNacimiento.getTime())); // Conversión a java.sql.Date
-            pstmt.executeUpdate();
-
-            JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
-        } catch (SQLException ex) {
-            Logger.getLogger(frmRegistro.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Error al registrar usuario: " + ex.getMessage());
-        } finally {
-            try {
-                conexion.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(frmRegistro.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
+    // Crea un nuevo objeto Usuario con los datos capturados
+    Usuarios nuevoUsuario = new Usuarios();
+    nuevoUsuario.setCorreo(correo);
+    nuevoUsuario.setContrasena(contrasena);
+    nuevoUsuario.setNombreCompleto(nombreCompleto);
+    nuevoUsuario.setDomicilio(domicilio);
+    nuevoUsuario.setEdad(edad);
+    nuevoUsuario.setFechaNacimiento(fechaNacimiento);
+    
+    // Llama al método agregar del UsuarioDAO
+    boolean resultado = u.agregar(nuevoUsuario);
+    
+    // Muestra un mensaje dependiendo del resultado de la operación
+    if (resultado) {
+        JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al registrar el usuario. Intente nuevamente.");
+    }
     }//GEN-LAST:event_botonRegistrarse
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
