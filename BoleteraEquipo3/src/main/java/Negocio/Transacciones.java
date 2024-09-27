@@ -22,8 +22,8 @@ public class Transacciones {
     public Transacciones() {}
 
     // Constructor con todos los parámetros
-    public Transacciones(int transaccionId, String tipoTransaccion, LocalDateTime fechaHora, Integer compradorId, Integer vendedorId, double monto, int boletoId, double comision) {
-        this.transaccionId = transaccionId;
+    public Transacciones(String tipoTransaccion, LocalDateTime fechaHora, Integer compradorId, Integer vendedorId, double monto, int boletoId, double comision) {
+        
         this.tipoTransaccion = tipoTransaccion;
         this.fechaHora = fechaHora;
         this.compradorId = compradorId;

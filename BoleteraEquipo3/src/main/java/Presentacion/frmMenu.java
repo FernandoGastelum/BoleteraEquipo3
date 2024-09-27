@@ -6,11 +6,15 @@ package Presentacion;
 
 import Negocio.Boletos;
 import Negocio.Eventos;
+import Negocio.Transacciones;
 import dao.BoletoDAO;
 import dao.Conexion;
 import dao.EventoDAO;
+import dao.TransaccionDAO;
+import dao.UsuarioDAO;
 import java.awt.Component;
 import java.awt.Point;
+import java.time.LocalDateTime;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,12 +26,16 @@ public class frmMenu extends javax.swing.JFrame {
     Conexion c = new Conexion();
     EventoDAO e = new EventoDAO(c);
     BoletoDAO b = new BoletoDAO(c);
+    UsuarioDAO u = new UsuarioDAO(c);
+    TransaccionDAO t = new TransaccionDAO(c);
+    String correo;
     /**
      * Creates new form frmMenu
      */
-    public frmMenu() {
+    public frmMenu(String usuario) {
         initComponents();
         c.crearConexion();
+        correo = usuario;
         
         
     }
@@ -54,7 +62,7 @@ public class frmMenu extends javax.swing.JFrame {
         JPanelMisBoletos = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaBoletosMisBoletos1 = new javax.swing.JTable();
+        tablaBoletosMisBoletos = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -188,15 +196,23 @@ public class frmMenu extends javax.swing.JFrame {
 
         jLabel2.setText("Mis Boletos");
 
-        tablaBoletosMisBoletos1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaBoletosMisBoletos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Numero de Control", "Asiento", "Fila", "Precio"
             }
-        ));
-        jScrollPane1.setViewportView(tablaBoletosMisBoletos1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaBoletosMisBoletos);
 
         jLabel3.setText("Boletos");
 
@@ -211,7 +227,7 @@ public class frmMenu extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, true
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -292,13 +308,13 @@ public class frmMenu extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Evento", "Fecha", "Venue", "Ciudad", "Estado"
             }
         ));
         jScrollPane3.setViewportView(tablaEventosComprarBoleto);
 
         listaFilaComprarBoletos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "Fila 1", "Fila 2", "Fila 3", " ", " " };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -309,7 +325,7 @@ public class frmMenu extends javax.swing.JFrame {
         jLabel9.setText("Asiento");
 
         listaAsientoComprarBoleto.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -419,9 +435,22 @@ public class frmMenu extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Evento", "Fecha", "Venue", "Ciudad", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaEventosVenderBoletos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaEventosVenderBoletosMouseClicked(evt);
+            }
+        });
         jScrollPane6.setViewportView(tablaEventosVenderBoletos);
 
         jLabel13.setText("Boletos");
@@ -433,12 +462,25 @@ public class frmMenu extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Numero de Control", "Asiento", "Fila", "Precio"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane7.setViewportView(tablaBoletosVenderBoletos);
 
         btnPublicarVenderBoletos.setText("Publicar");
+        btnPublicarVenderBoletos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPublicarVenderBoletosActionPerformed(evt);
+            }
+        });
 
         jLabel14.setText("Precio");
 
@@ -818,18 +860,74 @@ public class frmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void btnVenderBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderBoletosActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tablaEventosVenderBoletos.getModel();
+        e.limpiarTabla(model);
+        e.cargarTablaEventos(model);
         jTabbedPane1.setSelectedIndex(2);
+        
+        
     }//GEN-LAST:event_btnVenderBoletosActionPerformed
 
     private void tablaEventosMisBoletosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEventosMisBoletosMouseClicked
-        DefaultTableModel model = (DefaultTableModel) tablaBoletosMisBoletos1.getModel();
+        DefaultTableModel model = (DefaultTableModel) tablaBoletosMisBoletos.getModel();
         int selectedRow = tablaEventosMisBoletos.getSelectedRow();
         b.limpiarTabla(model);
-        b.cargarTablaBoletos(model, Integer.parseInt(tablaEventosMisBoletos.getValueAt(selectedRow, 0).toString()));
+        b.cargarTablaBoletos(model, Integer.parseInt(tablaEventosMisBoletos.getValueAt(selectedRow, 0).toString()),u.consultarConCorreo(correo).getUsuarioId(),true);
         
     }//GEN-LAST:event_tablaEventosMisBoletosMouseClicked
 
-   
+
+    private void tablaEventosVenderBoletosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEventosVenderBoletosMouseClicked
+        DefaultTableModel model = (DefaultTableModel) tablaBoletosVenderBoletos.getModel();
+        int selectedRow = tablaEventosVenderBoletos.getSelectedRow();
+        int id = u.consultarConCorreo(correo).getUsuarioId();
+        b.limpiarTabla(model);
+        b.cargarTablaBoletos(model, Integer.parseInt(tablaEventosVenderBoletos.getValueAt(selectedRow, 0).toString()),id,false);
+    }//GEN-LAST:event_tablaEventosVenderBoletosMouseClicked
+
+    private void btnPublicarVenderBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarVenderBoletosActionPerformed
+        Boletos boleto = new Boletos();
+        int selectedRow = tablaEventosVenderBoletos.getSelectedRow();
+        boleto = b.consultar(Integer.parseInt(tablaEventosVenderBoletos.getValueAt(selectedRow, 0).toString()));
+        boleto.setReventa(true);
+        boleto.setPrecioActual(Double.parseDouble(txtPrecioVenderBoletos.getText()));
+        b.actualizar(boleto);
+    }//GEN-LAST:event_btnPublicarVenderBoletosActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(frmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(frmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(frmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(frmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new frmMenu("ejemplo@gmail.com").setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelMisBoletos;
@@ -897,7 +995,7 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JList<String> listaAsientoComprarBoleto;
     private javax.swing.JList<String> listaFilaComprarBoletos;
-    private javax.swing.JTable tablaBoletosMisBoletos1;
+    private javax.swing.JTable tablaBoletosMisBoletos;
     private javax.swing.JTable tablaBoletosVenderBoletos;
     private javax.swing.JTable tablaComprasHistorial;
     private javax.swing.JTable tablaEventosComprarBoleto;
