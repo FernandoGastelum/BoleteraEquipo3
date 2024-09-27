@@ -217,17 +217,7 @@ public class frmLogin extends javax.swing.JPanel implements java.beans.Customize
         }
     }
 
-    public static void main(String[] args) {
-        // Usar SwingUtilities para asegurar que el código se ejecute en el Event Dispatch Thread
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Login");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(new frmLogin()); // Añadir el panel frmLogin al frame
-            frame.pack();
-            frame.setLocationRelativeTo(null); // Centrar la ventana en la pantalla
-            frame.setVisible(true); // Hacer visible la ventana
-        });
-    }
+  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
