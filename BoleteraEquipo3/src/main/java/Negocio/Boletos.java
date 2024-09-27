@@ -15,6 +15,7 @@ public class Boletos {
     private String asiento;
     private int numeroControl;
     private double precioOriginal;
+    private double precioActual;
     private int eventoId;
     private int usuarioId;
     private boolean reventa;
@@ -24,18 +25,33 @@ public class Boletos {
     public Boletos() {}
 
     // Constructor con todos los parámetros
-    public Boletos(int boletoId, String numeroSerie, String fila, String asiento, int numeroControl, double precioOriginal, int eventoId, int usuarioId, boolean reventa, boolean venta) {
+    public Boletos(int boletoId, String numeroSerie, String fila, String asiento, int numeroControl, double precioOriginal,double precioActual, int eventoId, int usuarioId, boolean reventa, boolean venta) {
         this.boletoId = boletoId;
         this.numeroSerie = numeroSerie;
         this.fila = fila;
         this.asiento = asiento;
         this.numeroControl = numeroControl;
         this.precioOriginal = precioOriginal;
+        this.precioActual = precioActual;
         this.eventoId = eventoId;
         this.usuarioId = usuarioId;
         this.reventa = reventa;
         this.venta = venta;
     }
+
+    public Boletos(String numeroSerie, String fila, String asiento, int numeroControl, double precioOriginal, double precioActual, int eventoId, boolean reventa, boolean venta) {
+        this.numeroSerie = numeroSerie;
+        this.fila = fila;
+        this.asiento = asiento;
+        this.numeroControl = numeroControl;
+        this.precioOriginal = precioOriginal;
+        this.precioActual = precioActual;
+        this.eventoId = eventoId;
+        this.reventa = reventa;
+        this.venta = venta;
+    }
+    
+    
 
     // Getters y Setters
     public int getBoletoId() {
@@ -45,6 +61,15 @@ public class Boletos {
     public void setBoletoId(int boletoId) {
         this.boletoId = boletoId;
     }
+
+    public double getPrecioActual() {
+        return precioActual;
+    }
+
+    public void setPrecioActual(double precioActual) {
+        this.precioActual = precioActual;
+    }
+    
 
     public String getNumeroSerie() {
         return numeroSerie;

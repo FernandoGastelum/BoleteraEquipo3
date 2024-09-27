@@ -4,9 +4,14 @@
  */
 package Presentacion;
 
+import Negocio.Boletos;
 import Negocio.Eventos;
+import dao.BoletoDAO;
 import dao.Conexion;
 import dao.EventoDAO;
+import java.awt.Component;
+import java.awt.Point;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 public class frmMenu extends javax.swing.JFrame {
     Conexion c = new Conexion();
     EventoDAO e = new EventoDAO(c);
+    BoletoDAO b = new BoletoDAO(c);
     /**
      * Creates new form frmMenu
      */
@@ -201,9 +207,22 @@ public class frmMenu extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Nombre", "Fecha", "Venue", "Ciudad", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaEventosMisBoletos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaEventosMisBoletosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tablaEventosMisBoletos);
 
         btnInfoEventosMisBoletos.setText("info");
@@ -774,6 +793,7 @@ public class frmMenu extends javax.swing.JFrame {
 
     private void btnConsultarBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarBoletosActionPerformed
         DefaultTableModel model = (DefaultTableModel) tablaEventosMisBoletos.getModel();
+        e.limpiarTabla(model);
         e.cargarTablaEventos(model);
         jTabbedPane1.setSelectedIndex(0);
         
@@ -783,6 +803,9 @@ public class frmMenu extends javax.swing.JFrame {
         EventoDAO e = new EventoDAO(c);
         Eventos evento = new Eventos("Corona", "20-10-2024","CityBanamex","CDMX","Mexico","Evento donde participan grandes grupos");
         e.agregar(evento);
+        BoletoDAO b = new BoletoDAO(c);
+        Boletos boleto = new Boletos("EJE", "fila 1", "asiento 2", 1235, 2000, 2000, 1, false, true);
+        b.agregar(boleto);
                 
     }//GEN-LAST:event_btnCargarDatosActionPerformed
 
@@ -793,6 +816,14 @@ public class frmMenu extends javax.swing.JFrame {
     private void btnVenderBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderBoletosActionPerformed
         jTabbedPane1.setSelectedIndex(2);
     }//GEN-LAST:event_btnVenderBoletosActionPerformed
+
+    private void tablaEventosMisBoletosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEventosMisBoletosMouseClicked
+        DefaultTableModel model = (DefaultTableModel) tablaBoletosMisBoletos1.getModel();
+        int selectedRow = tablaEventosMisBoletos.getSelectedRow();
+        b.limpiarTabla(model);
+        b.cargarTablaBoletos(model, Integer.parseInt(tablaEventosMisBoletos.getValueAt(selectedRow, 0).toString()));
+        
+    }//GEN-LAST:event_tablaEventosMisBoletosMouseClicked
 
     /**
      * @param args the command line arguments

@@ -37,6 +37,7 @@ public class EventoDAO implements IEvento{
             
             while(resultados.next()){
                 Eventos e = new Eventos();
+                e.setEvento_id(resultados.getInt("evento_id"));
                 e.setNombre_evento(resultados.getString("nombre_evento"));
                 e.setFecha_evento(resultados.getString("fecha_evento"));
                 e.setVenue(resultados.getString("venue"));
@@ -91,11 +92,11 @@ public class EventoDAO implements IEvento{
     }
     
     public void cargarTablaEventos(DefaultTableModel model){
-        EventoDAO eDAO = new EventoDAO(conexion);
         java.util.List<Eventos> listaEventos = this.consultar();
         
         for (Eventos eventos : listaEventos) {
         model.addRow(new Object[]{
+            eventos.getEvento_id(),
             eventos.getNombre_evento(), 
             eventos.getFecha_evento(), 
             eventos.getVenue(), 
@@ -103,6 +104,12 @@ public class EventoDAO implements IEvento{
             eventos.getEstado(), 
             eventos.getDescripcion()
             });
+        }
+    }
+    public void limpiarTabla(DefaultTableModel model){
+        for (int i = 0; i < model.getRowCount() ; i++) {
+            model.removeRow(i);
+            i=i-1;
         }
     }
 }
