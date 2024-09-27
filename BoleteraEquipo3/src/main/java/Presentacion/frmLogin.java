@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
  * @author oribi
  */
 public class frmLogin extends javax.swing.JPanel implements java.beans.Customizer {
-    
+
     private Object bean;
 
     /**
@@ -26,7 +26,7 @@ public class frmLogin extends javax.swing.JPanel implements java.beans.Customize
     public frmLogin() {
         initComponents();
     }
-    
+
     public void setObject(Object bean) {
         this.bean = bean;
     }
@@ -129,30 +129,47 @@ public class frmLogin extends javax.swing.JPanel implements java.beans.Customize
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void botonRegistrarse(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarse
-      // Crear y mostrar la ventana de registro
-    frmRegistro registro = new frmRegistro();
-    registro.setVisible(true);
-     
+
+        frmRegistro registroPanel = new frmRegistro();
+
+        JFrame registroFrame = new JFrame("Registro de Usuario");
+        registroFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        registroFrame.add(registroPanel);
+        registroFrame.pack();
+        registroFrame.setVisible(true);
+
+        JFrame loginFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (loginFrame != null) {
+            loginFrame.dispose();
+        }
+
     }//GEN-LAST:event_botonRegistrarse
 
     private void botonIngresar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIngresar
-      String usuario = jTextField1.getText(); // Captura el correo ingresado
+        String usuario = jTextField1.getText(); // Captura el correo ingresado
         String contraseña = new String(jPasswordField1.getPassword()); // Captura la contraseña ingresada
 
         if (validarCredenciales(usuario, contraseña)) {
+
             // Si las credenciales son válidas, redirigir a frmMenu
             frmMenu menu = new frmMenu(usuario);
             menu.setVisible(true);
+
+            JFrame loginFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            if (loginFrame != null) {
+                loginFrame.dispose();
+            }
+
         } else {
-            // Mostrar un mensaje de error si las credenciales no son válidas
+           
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_botonIngresar
-private boolean validarCredenciales(String correo, String contraseña) {
+    private boolean validarCredenciales(String correo, String contraseña) {
         Conexion conexionDB = new Conexion(); // Crear una instancia de la clase Conexion
         Connection conexion = null;
         PreparedStatement statement = null;
@@ -186,26 +203,22 @@ private boolean validarCredenciales(String correo, String contraseña) {
         } finally {
             // Cerrar conexiones
             try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-                if (conexion != null) conexion.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (conexion != null) {
+                    conexion.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
- // Método principal para probar frmLogin
-    public static void main(String[] args) {
-        // Usar SwingUtilities para asegurar que el código se ejecute en el Event Dispatch Thread
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Login");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(new frmLogin()); // Añadir el panel frmLogin al frame
-            frame.pack();
-            frame.setLocationRelativeTo(null); // Centrar la ventana en la pantalla
-            frame.setVisible(true); // Hacer visible la ventana
-        });
-    }
+
+  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

@@ -18,7 +18,7 @@ public class Usuarios {
     private int edad;
     private double saldo;
 
-    // Constructor vacío
+   
     public Usuarios() {}
 
     // Constructor con todos los parámetros

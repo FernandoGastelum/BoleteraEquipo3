@@ -872,6 +872,7 @@ public class frmMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_tablaEventosMisBoletosMouseClicked
 
+
     private void tablaEventosVenderBoletosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEventosVenderBoletosMouseClicked
         DefaultTableModel model = (DefaultTableModel) tablaBoletosVenderBoletos.getModel();
         int selectedRow = tablaEventosVenderBoletos.getSelectedRow();
