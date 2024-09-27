@@ -36,8 +36,8 @@ public class BoletoDAO implements IBoleto{
     @Override
     public boolean agregar(Boletos boleto) {
         Connection bd = conexion.crearConexion();
-        String sql = "INSERT INTO Boletos (numero_serie, fila, asiento, numero_control, precio_original,precio_actual, evento_id, reventa, venta) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Boletos (numero_serie, fila, asiento, numero_control, precio_original,precio_actual, evento_id, reventa, venta, usuario_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = bd.prepareStatement(sql)) {
             statement.setString(1, boleto.getNumeroSerie());
@@ -49,6 +49,7 @@ public class BoletoDAO implements IBoleto{
             statement.setInt(7, boleto.getEventoId());
             statement.setBoolean(8, boleto.isReventa());
             statement.setBoolean(9, boleto.isVenta());
+            statement.setInt(10, boleto.getUsuarioId());
 
             int filasInsertadas = statement.executeUpdate();
             return filasInsertadas > 0;
@@ -138,17 +139,11 @@ public class BoletoDAO implements IBoleto{
     }
     
     
-    public List<Boletos> consultarPorEvento(int eventoID,int idUsuario, boolean misBoletos) {
+    public List<Boletos> consultarPorEvento(int eventoID,int idUsuario) {
         String sql;
         Connection bd = conexion.crearConexion();
         List<Boletos> listaBoletos = new ArrayList<>();
-        if(misBoletos){
-            sql = "SELECT * FROM Boletos WHERE evento_id = ? AND usuario_id = ?";
-        }
-        else{
-            sql = "SELECT * FROM Boletos WHERE evento_id = ? AND (venta = true OR reventa = true) AND usuario_id = ?";
-        }
-
+        sql = "SELECT * FROM Boletos WHERE evento_id = ? AND usuario_id = ?";
         try (PreparedStatement statement = bd.prepareStatement(sql)) {
             statement.setInt(1, eventoID);
             statement.setInt(2, idUsuario);
@@ -201,8 +196,8 @@ public class BoletoDAO implements IBoleto{
             return false;
         }
     }
-    public void cargarTablaBoletos(DefaultTableModel model, int idEvento, int idUsuario, boolean misBoletos){
-        java.util.List<Boletos> listaBoletos = this.consultarPorEvento(idEvento,idUsuario, misBoletos);
+    public void cargarTablaBoletos(DefaultTableModel model, int idEvento, int idUsuario){
+        java.util.List<Boletos> listaBoletos = this.consultarPorEvento(idEvento,idUsuario);
         
         for (Boletos boletos : listaBoletos) {
         model.addRow(new Object[]{
