@@ -39,7 +39,7 @@ public class Boletos {
         this.venta = venta;
     }
 
-    public Boletos(String numeroSerie, String fila, String asiento, int numeroControl, double precioOriginal, double precioActual, int eventoId, boolean reventa, boolean venta) {
+    public Boletos(String numeroSerie, String fila, String asiento, int numeroControl, double precioOriginal, double precioActual, int eventoId, boolean reventa, boolean venta,int usuarioId) {
         this.numeroSerie = numeroSerie;
         this.fila = fila;
         this.asiento = asiento;
@@ -49,6 +49,7 @@ public class Boletos {
         this.eventoId = eventoId;
         this.reventa = reventa;
         this.venta = venta;
+        this.usuarioId = usuarioId;
     }
     
     

@@ -15,6 +15,7 @@ import dao.UsuarioDAO;
 import java.awt.Component;
 import java.awt.Point;
 import java.time.LocalDateTime;
+import java.util.Random;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -85,7 +86,7 @@ public class frmMenu extends javax.swing.JFrame {
         listaAsientoComprarBoleto = new javax.swing.JList<>();
         jLabel10 = new javax.swing.JLabel();
         txtPrecioComprarBoleto = new javax.swing.JTextField();
-        jButton8 = new javax.swing.JButton();
+        btnPagarComprarBoleto = new javax.swing.JButton();
         btnInfoEventoComprarBoleto = new javax.swing.JButton();
         jPanelVenderBoleto = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -201,11 +202,11 @@ public class frmMenu extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Numero de Control", "Asiento", "Fila", "Precio"
+                "ID", "Numero de Control", "Asiento", "Fila", "Precio"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -334,11 +335,13 @@ public class frmMenu extends javax.swing.JFrame {
         jLabel10.setText("Precio");
 
         txtPrecioComprarBoleto.setColumns(10);
+        txtPrecioComprarBoleto.setText("150");
+        txtPrecioComprarBoleto.setEnabled(false);
 
-        jButton8.setText("Pagar");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        btnPagarComprarBoleto.setText("Pagar");
+        btnPagarComprarBoleto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                btnPagarComprarBoletoActionPerformed(evt);
             }
         });
 
@@ -380,7 +383,7 @@ public class frmMenu extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelComprarBoletoLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton8)
+                .addComponent(btnPagarComprarBoleto)
                 .addGap(21, 21, 21))
         );
         jPanelComprarBoletoLayout.setVerticalGroup(
@@ -416,7 +419,7 @@ public class frmMenu extends javax.swing.JFrame {
                                 .addComponent(txtPrecioComprarBoleto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(jButton8)
+                .addComponent(btnPagarComprarBoleto)
                 .addGap(17, 17, 17))
         );
 
@@ -831,6 +834,10 @@ public class frmMenu extends javax.swing.JFrame {
 
     private void btnComprarBoletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarBoletoActionPerformed
         jTabbedPane1.setSelectedIndex(1);
+        DefaultTableModel model = (DefaultTableModel) tablaEventosComprarBoleto.getModel();
+        e.limpiarTabla(model);
+        e.cargarTablaEventos(model);
+        
     }//GEN-LAST:event_btnComprarBoletoActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -850,14 +857,23 @@ public class frmMenu extends javax.swing.JFrame {
         Eventos evento = new Eventos("Corona", "20-10-2024","CityBanamex","CDMX","Mexico","Evento donde participan grandes grupos");
         e.agregar(evento);
         BoletoDAO b = new BoletoDAO(c);
-        Boletos boleto = new Boletos("EJE", "fila 1", "asiento 2", 1235, 2000, 2000, 1, false, true);
-        b.agregar(boleto);
+        //Boletos boleto = new Boletos("EJE", "fila 1", "asiento 2", 1235, 2000, 2000, 1, false, true);
+        //b.agregar(boleto);
                 
     }//GEN-LAST:event_btnCargarDatosActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    private void btnPagarComprarBoletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarComprarBoletoActionPerformed
+        int selectedRow = tablaEventosComprarBoleto.getSelectedRow();
+        tablaEventosComprarBoleto.getValueAt(selectedRow, 0);
+        Random rand = new Random();
+        int rand_int1 = rand.nextInt(1000);
+        Boletos boleto = new Boletos("", listaFilaComprarBoletos.getSelectedValue(), listaAsientoComprarBoleto.getSelectedValue(),
+                rand_int1, Double.parseDouble(txtPrecioComprarBoleto.getText()), 
+                Double.parseDouble(txtPrecioComprarBoleto.getText()), Integer.parseInt(tablaEventosComprarBoleto.getValueAt(selectedRow, 0).toString()), 
+                false, false,u.consultarConCorreo(correo).getUsuarioId());
+ 
+        b.agregar(boleto);
+    }//GEN-LAST:event_btnPagarComprarBoletoActionPerformed
 
     private void btnVenderBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderBoletosActionPerformed
         DefaultTableModel model = (DefaultTableModel) tablaEventosVenderBoletos.getModel();
@@ -872,7 +888,7 @@ public class frmMenu extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tablaBoletosMisBoletos.getModel();
         int selectedRow = tablaEventosMisBoletos.getSelectedRow();
         b.limpiarTabla(model);
-        b.cargarTablaBoletos(model, Integer.parseInt(tablaEventosMisBoletos.getValueAt(selectedRow, 0).toString()),u.consultarConCorreo(correo).getUsuarioId(),true);
+        b.cargarTablaBoletos(model, Integer.parseInt(tablaEventosMisBoletos.getValueAt(selectedRow, 0).toString()),u.consultarConCorreo(correo).getUsuarioId());
         
     }//GEN-LAST:event_tablaEventosMisBoletosMouseClicked
 
@@ -880,9 +896,8 @@ public class frmMenu extends javax.swing.JFrame {
     private void tablaEventosVenderBoletosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEventosVenderBoletosMouseClicked
         DefaultTableModel model = (DefaultTableModel) tablaBoletosVenderBoletos.getModel();
         int selectedRow = tablaEventosVenderBoletos.getSelectedRow();
-        int id = u.consultarConCorreo(correo).getUsuarioId();
         b.limpiarTabla(model);
-        b.cargarTablaBoletos(model, Integer.parseInt(tablaEventosVenderBoletos.getValueAt(selectedRow, 0).toString()),id,false);
+        b.cargarTablaBoletos(model, Integer.parseInt(tablaEventosVenderBoletos.getValueAt(selectedRow, 0).toString()),u.consultarConCorreo(correo).getUsuarioId());
     }//GEN-LAST:event_tablaEventosVenderBoletosMouseClicked
 
     private void btnPublicarVenderBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarVenderBoletosActionPerformed
@@ -915,10 +930,10 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnInfoEventoVenderBoletos;
     private javax.swing.JButton btnInfoEventosMisBoletos;
     private javax.swing.JButton btnModificarDatos;
+    private javax.swing.JButton btnPagarComprarBoleto;
     private javax.swing.JButton btnPublicarVenderBoletos;
     private javax.swing.JButton btnVenderBoletos;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
