@@ -31,4 +31,8 @@ public class Conexion implements IConexion{
         }
         return null;
     }
+    // Nuevo método getConnection
+    public Connection getConnection() {
+        return crearConexion();
+    }
 }
