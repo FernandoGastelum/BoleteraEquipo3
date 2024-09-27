@@ -169,36 +169,7 @@ public class UsuarioDAO implements IUsuarios{
         }
         return usuarios;
     }
- public double obtenerSaldo(int usuarioId) {
-    Connection bd = conexion.crearConexion();
-    String consulta = "SELECT saldo FROM Usuarios WHERE usuario_id = ?";
-    try {
-        PreparedStatement statement = bd.prepareStatement(consulta);
-        statement.setInt(1, usuarioId);
-        ResultSet resultados = statement.executeQuery();
-        if (resultados.next()) {
-            return resultados.getDouble("saldo");
-        }
-    } catch (SQLException e) {
-        System.out.println("No se pudo consultar el saldo");
-    }
-    return 0.0;
-}
-
-public boolean actualizarSaldo(int usuarioId, double nuevoSaldo) {
-    Connection bd = conexion.crearConexion();
-    String actualizar = "UPDATE Usuarios SET saldo = ? WHERE usuario_id = ?";
-    try {
-        PreparedStatement statement = bd.prepareStatement(actualizar);
-        statement.setDouble(1, nuevoSaldo);
-        statement.setInt(2, usuarioId);
-        statement.executeUpdate();
-        return true;
-    } catch (SQLException e) {
-        System.out.println("No se pudo actualizar el saldo");
-        return false;
-    }
-}
+ 
   // Otros métodos y constructor
 
      
@@ -218,18 +189,19 @@ public boolean actualizarSaldo(int usuarioId, double nuevoSaldo) {
     return -1; // Retorna -1 si no se encuentra el usuario o hay un error
 }
 
-public boolean actualizarSaldoPorCorreo(String correo, double nuevoSaldo) {
+public boolean actualizarSaldoPorCorreo(String correo, double saldoADescontar) {
     Connection bd = conexion.crearConexion();
-    String actualizar = "UPDATE Usuarios SET saldo = ? WHERE correo = ?";
+    String actualizar = "UPDATE Usuarios SET saldo = saldo + ? WHERE correo = ?";
     try {
         PreparedStatement statement = bd.prepareStatement(actualizar);
-        statement.setDouble(1, nuevoSaldo);
+        statement.setDouble(1, saldoADescontar); // Aquí se suma el saldo que deseas agregar
         statement.setString(2, correo);
-        statement.executeUpdate();
-        return true;
+        int filasActualizadas = statement.executeUpdate();
+        return filasActualizadas > 0; // Retorna true si se actualizó al menos una fila
     } catch (SQLException e) {
         System.out.println("No se pudo actualizar el saldo");
         return false;
     }
 }
+
 }

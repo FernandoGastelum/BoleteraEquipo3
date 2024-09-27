@@ -95,7 +95,7 @@ public class frmSaldo extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Usuario ");
+        jLabel4.setText("Correo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -193,11 +193,8 @@ public class frmSaldo extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonConfirmar
 
     private void botonRegresar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresar
-       frmMenu menuForm = new frmMenu();
-    
-    // Hacer visible el formulario frmSaldo
-    menuForm.setVisible(true);
-    this.dispose();
+       
+      
     }//GEN-LAST:event_botonRegresar
 
     /**
